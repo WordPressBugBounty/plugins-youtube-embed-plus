@@ -3,17 +3,15 @@ Contributors: embedplus
 Plugin Name: Embed Plus for YouTube Gallery, Livestream and Lazy Loading with Facades
 Tags: youtube gallery, youtube wordpress plugin, channel gallery, playlist gallery, defer css javascript, youtube channel, youtube live stream, lazy load, facade
 Requires at least: 4.5
-Tested up to: 6.7
-Stable tag: 14.2.1.3
+Tested up to: 6.8
+Stable tag: 14.2.2
 License: GPLv3 or later
 
-The best plugin to embed YouTube in WordPress. Embed a responsive video, YouTube channel gallery, playlist gallery, YouTube livestream. Defer JavaScript
+A multi-featured plugin to embed YouTube in WordPress. Embed a responsive video, YouTube channel gallery, playlist gallery, YouTube livestream. Defer JavaScript
 
 == Description ==
 
-https://www.youtube.com/watch?v=QDdvXBqfrzM
-
-**The best plugin to embed YouTube in WordPress** Use this plugin to embed and customize a YouTube gallery (channel or playlist),  YouTube livestream (and premiere), YouTube short, or standard YouTube video. This plugin for YouTube can be customized in a wide variety of ways. The plugin also focuses on performance with the ability to lazy load with a facade and defer JavaScript while serving minified CSS and JavaScript. Here are a few recently added features to all versions (free and Pro) of this plugin:
+**A multi-featured plugin to embed YouTube in WordPress**. Use this plugin to embed and customize a YouTube gallery (channel or playlist),  YouTube livestream (and premiere), YouTube short, or standard YouTube video. This plugin for YouTube can be customized in a wide variety of ways. The plugin also focuses on performance with the ability to lazy load with a facade and defer JavaScript while serving minified CSS and JavaScript. Here are a few recently added features to all versions (free and Pro) of this plugin:
 
 * YouTube gallery embeds and standard videos now support Facade Mode which improves plugin performance by loading a lighter version of the player, until it is clicked. The plugin then loads the real YouTube embed after clicking (note: for live streams, the real player is always loaded).  We have tested this feature in multiple cases with a mix of other WordPress plugins, and we found it to successfully improve your Lighthouse performance score by addressing the following recommendation: "Some third-party resources can be lazy loaded with a facade - 1 facade alternative available." You can demo this facade feature on our [Embed Plus for YouTube Plugin](https://youtube-wordpress-plugin.embedplus.com/) WordPress test site.
 * Defer critical and non critical JavaScript - improve the initial load time of your pages by allowing this plugin's critical and non critical Javascript code to begin execution only after a page is loaded. That reasoning is the basis for the Defer CSS Javascript (styles and code) recommendation you'll see in various web profiling tools.  We plan to add a plugin feature that will defer critical and non critical CSS in the future.
@@ -187,6 +185,9 @@ Assuming you already have the EmbedPlus plugin active, you can embed a YouTube s
 9. Embed Plus for YouTube Plugin Screenshot 9: Optional YouTube channel subscription button above gallery thumbnails
 
 == Changelog ==
+
+= Embed Plus for YouTube Plugin 14.2.2 =
+* This version cleans up outdated code and is tested for WordPress 6.8 compatibility.
 
 = Embed Plus for YouTube Plugin 14.2.1.3 =
 * This version updates the name of the plugin to fully adhere to WordPress.org's plugin name guidelines.
