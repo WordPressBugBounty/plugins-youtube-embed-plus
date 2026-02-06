@@ -3,7 +3,7 @@
   Plugin Name: Embed Plus for YouTube Gallery, Livestream and Lazy Loading with Facades
   Plugin URI: https://www.embedplus.com/dashboard/pro-easy-video-analytics.aspx?ref=plugin
   Description: A multi-featured plugin to embed YouTube in WordPress. Embed a video, YouTube channel gallery, playlist, or YouTube livestream. Defer JavaScript too!
-  Version: 14.2.3
+  Version: 14.2.4
   Author: Embed Plus for YouTube Plugin Team
   Author URI: https://www.embedplus.com
   Requires at least: 4.5
@@ -35,7 +35,7 @@ class YouTubePrefs
 
     public static $folder_name = 'youtube-embed-plus';
     public static $curltimeout = 30;
-    public static $version = '14.2.3';
+    public static $version = '14.2.4';
     public static $opt_version = 'version';
     public static $optembedwidth = null;
     public static $optembedheight = null;
@@ -57,6 +57,7 @@ class YouTubePrefs
     public static $opt_playsinline = 'playsinline';
     public static $opt_autohide = 'autohide';
     public static $opt_controls = 'controls';
+    public static $opt_disablekb = 'disablekb';
     public static $opt_theme = 'theme';
     public static $opt_color = 'color';
     public static $opt_listType = 'listType';
@@ -202,6 +203,7 @@ class YouTubePrefs
             self::$opt_playsinline,
             self::$opt_autohide,
             self::$opt_controls,
+            self::$opt_disablekb,
             self::$opt_hl,
             self::$opt_theme,
             self::$opt_color,
@@ -752,7 +754,7 @@ class YouTubePrefs
                                             <div class="clearboth" style="height: 10px;">
                                             </div>
                                             <div class="ep-wizard-preview-video-wrapper">
-                                                <iframe src="https://www.youtube.com/embed/<?php echo esc_attr($theytid) ?>?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                                <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/<?php echo esc_attr($theytid) ?>?rel=0" allowfullscreen="" frameborder="0"></iframe>
                                             </div>
 
                                         </div>
@@ -862,7 +864,7 @@ class YouTubePrefs
                                         <div class="clearboth" style="height: 10px;">
                                         </div>
                                         <div class="ep-wizard-preview-video-wrapper">
-                                            <iframe src="<?php echo $rel; ?>" allowfullscreen="" frameborder="0"></iframe>
+                                            <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="<?php echo $rel; ?>" allowfullscreen="" frameborder="0"></iframe>
                                         </div>
                                     </div>
                                     <?php
@@ -965,7 +967,7 @@ class YouTubePrefs
                                         <div class="clearboth" style="height: 10px;">
                                         </div>
                                         <div class="ep-wizard-preview-video-wrapper">
-                                            <iframe src="<?php echo $rel; ?>" allowfullscreen="" frameborder="0"></iframe>
+                                            <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="<?php echo $rel; ?>" allowfullscreen="" frameborder="0"></iframe>
                                         </div>
                                     </div>
                                     <?php
@@ -1066,7 +1068,7 @@ class YouTubePrefs
                                             <?php _e('If you see a black/empty YouTube player, then it likely means that you do not have any currently running or future live streams that are scheduled in your channel, so the plugin isn\'t getting any data from the YouTube API to show.  If you want to continue to use the channel based live stream embedding method, we suggest regularly scheduling one or more live streams, or using the live stream fallback content feature, so the player is not black/empty.', 'text_domain'); ?>
                                         </p>
                                         <div class="ep-wizard-preview-video-wrapper">
-                                            <iframe src="https://www.youtube.com/embed/live_stream?channel=<?php echo esc_attr($thechannelid) ?>" allowfullscreen="" frameborder="0"></iframe>
+                                            <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/live_stream?channel=<?php echo esc_attr($thechannelid) ?>" allowfullscreen="" frameborder="0"></iframe>
                                         </div>
                                     </div>
                                     <?php
@@ -1154,7 +1156,7 @@ class YouTubePrefs
                                 {
                                     ?>
                                     <div class="ep-wizard-preview-video-wrapper">
-                                        <iframe src="https://www.youtube.com/embed/<?php echo esc_attr($if_live_preview) ?>?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                        <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/<?php echo esc_attr($if_live_preview) ?>?rel=0" allowfullscreen="" frameborder="0"></iframe>
                                     </div>
                                     <?php
                                 }
@@ -1847,6 +1849,7 @@ class YouTubePrefs
         $_migrate_youtube = 0;
         $_migrate_embedplusvideo = 0;
         $_controls = 1;
+        $_disablekb = 0;
         $_oldspacing = 1;
         $_frontend_only = 1;
         $_responsive = 0;
@@ -1936,6 +1939,7 @@ class YouTubePrefs
             $_migrate_embedplusvideo = self::tryget($arroptions, self::$opt_migrate_embedplusvideo, 0);
             $_controls = self::tryget($arroptions, self::$opt_controls, 1);
             $_controls = $_controls == 2 ? 1 : $_controls;
+            $_disablekb = self::tryget($arroptions, self::$opt_disablekb, 0);
             $_oldspacing = self::tryget($arroptions, self::$opt_oldspacing, 1);
             $_frontend_only = self::tryget($arroptions, self::$opt_frontend_only, $_frontend_only);
             $_responsive = self::tryget($arroptions, self::$opt_responsive, $_responsive);
@@ -2019,6 +2023,7 @@ class YouTubePrefs
             self::$opt_migrate_youtube => $_migrate_youtube,
             self::$opt_migrate_embedplusvideo => $_migrate_embedplusvideo,
             self::$opt_controls => $_controls,
+            self::$opt_disablekb => $_disablekb,
             self::$opt_oldspacing => $_oldspacing,
             self::$opt_frontend_only => $_frontend_only,
             self::$opt_responsive => $_responsive,
@@ -2778,7 +2783,7 @@ class YouTubePrefs
             $code_iframe1 = '<iframe ' . $centercode . ' id="_ytid_' . $iframe_id . '" ' . $dim_attrs . ' data-origwidth="' . self::$defaultwidth . '" data-origheight="' . self::$defaultheight . '" ' . $relstop .
                     'src="https://www.' . $youtubebaseurl . '.com/embed/' . $videoidoutput . '?';
             $code_iframe2 = '" class="__youtube_prefs__ ' . (!empty($finalparams['live_stream']) ? ' epyt-live-channel ' : '') . ($iscontent ? '' : ' __youtube_prefs_widget__ ') . ($isoverride ? ' epyt-is-override ' : '') . ' no-lazyload"' .
-                    $voloutput . $acctitle . $galleryid_ifm_data . ' allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen data-no-lazy="1" data-skipgform_ajax_framebjll=""></iframe>';
+                    $voloutput . $acctitle . $galleryid_ifm_data . ' allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen data-no-lazy="1" data-skipgform_ajax_framebjll=""></iframe>';
         }
 
         $code2 = $end_responsive . $end_gb_wrapper;
@@ -3152,7 +3157,7 @@ class YouTubePrefs
         $new_pointer_content = '<h3>' . __('New Update') . '</h3>'; // ooopointer
 
         $new_pointer_content .= '<p>'; // ooopointer
-        $new_pointer_content .= 'This version removes the modest branding option which has been deprecated by Google. Also, <a target=_blank href="' . self::$epbase . '/dashboard/pro-easy-video-analytics.aspx?ref=frompointer">pro</a> users can experiment with the beta feature for filtering out YouTube Shorts from galleries.';
+        $new_pointer_content .= 'This version fixes a lightbox gallery issue for <a target=_blank href="' . self::$epbase . '/dashboard/pro-easy-video-analytics.aspx?ref=frompointer">pro</a> users, and allows you to disable keyboard controls for both free and pro users.';
         if (!empty(self::$alloptions[self::$opt_pro]) && strlen(trim(self::$alloptions[self::$opt_pro])) > 0)
         {
             $new_pointer_content .= ' <strong>Important message to Pro users</strong>: From version 11.7 onward, you must <a href="https://www.embedplus.com/youtube-pro/download/?prokey=' . esc_attr(self::$alloptions[self::$opt_pro]) . '" target="_blank">download the separate plugin here</a> to regain your Pro features. All your settings will automatically migrate after installing the separate Pro download. Thank you for your support and patience during this transition.';
@@ -3574,6 +3579,10 @@ class YouTubePrefs
                             <p>
                                 <input name="<?php echo self::$opt_controls; ?>" id="<?php echo self::$opt_controls; ?>" <?php checked($all[self::$opt_controls], 1); ?> type="checkbox" class="checkbox">
                                 <label for="<?php echo self::$opt_controls; ?>"><b class="chktitle">Show Controls:</b> Show the player's control bar. Unchecking this option creates a cleaner look but limits what your viewers can control (play position, volume, etc.).</label>
+                            </p>
+                            <p>
+                                <input name="<?php echo self::$opt_disablekb; ?>" id="<?php echo self::$opt_disablekb; ?>" <?php checked($all[self::$opt_disablekb], 1); ?> type="checkbox" class="checkbox">
+                                <label for="<?php echo self::$opt_disablekb; ?>"><b class="chktitle">Disable Keyboard Controls:</b> Prevent users from using keyboard controls (spacebar to play/pause, arrow keys to seek, etc.).</label>
                             </p>
                             <p>
                                 <input name="<?php echo self::$opt_defaultvol; ?>" id="<?php echo self::$opt_defaultvol; ?>" <?php checked($all[self::$opt_defaultvol], 1); ?> type="checkbox" class="checkbox">                        
@@ -4045,31 +4054,31 @@ class YouTubePrefs
                         <div class="wiztab-pagebuilder">
                             <h3>Beaver Builder</h3>
                             <div class="epyt-fitvid">
-                                <iframe src="https://www.youtube.com/embed/bPgz0jyt7TE?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/bPgz0jyt7TE?rel=0" allowfullscreen="" frameborder="0"></iframe>
                             </div>
                         </div>
                         <div class="wiztab-pagebuilder">
                             <h3>Elementor</h3>
                             <div class="epyt-fitvid">
-                                <iframe src="https://www.youtube.com/embed/ldNfIGRTxDU?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/ldNfIGRTxDU?rel=0" allowfullscreen="" frameborder="0"></iframe>
                             </div>
                         </div>
                         <div class="wiztab-pagebuilder">
                             <h3>Site Origin</h3>
                             <div class="epyt-fitvid">
-                                <iframe src="https://www.youtube.com/embed/7QNYw_g-7WM?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/7QNYw_g-7WM?rel=0" allowfullscreen="" frameborder="0"></iframe>
                             </div>
                         </div>
                         <div class="wiztab-pagebuilder">
                             <h3>Visual Composer</h3>
                             <div class="epyt-fitvid">
-                                <iframe src="https://www.youtube.com/embed/FWBQc9XhAqM?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/FWBQc9XhAqM?rel=0" allowfullscreen="" frameborder="0"></iframe>
                             </div>
                         </div>
                         <div class="wiztab-pagebuilder">
                             <h3>WPBakery</h3>
                             <div class="epyt-fitvid">
-                                <iframe src="https://www.youtube.com/embed/7T5wPoEujN8?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                                <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/7T5wPoEujN8?rel=0" allowfullscreen="" frameborder="0"></iframe>
                             </div>
                         </div>
                         <div class="wiztab-pagebuilder">
@@ -4370,6 +4379,7 @@ class YouTubePrefs
                         _e("<li><strong>fs</strong> - Set this to 0 to hide the fullscreen button (or 1 to show it). <em>Example: http://www.youtube.com/watch?v=quwebVjAEJA<strong>&fs=0</strong></em> </li>");
                         _e("<li><strong>color</strong> - Set this to 'white' to make the player have a white progress bar (or 'red' for a red progress bar). <em>Example: http://www.youtube.com/watch?v=quwebVjAEJA<strong>&color=white</strong></em> </li>");
                         _e("<li><strong>controls</strong> - Set this to 0 to completely hide the video controls (or 1 to show it). <em>Example: http://www.youtube.com/watch?v=quwebVjAEJA<strong>&controls=0</strong></em> </li>");
+                        _e("<li><strong>disablekb</strong> - Set this to 1 to disable keyboard controls (or 0 to enable them). <em>Example: http://www.youtube.com/watch?v=quwebVjAEJA<strong>&disablekb=1</strong></em> </li>");
                         _e("<li><strong>playsinline</strong> - Set this to 1 to allow videos play inline with the page on iOS browsers. (Set to 0 to have iOS launch videos in fullscreen instead). <em>Example: http://www.youtube.com/watch?v=quwebVjAEJA<strong>&playsinline=1</strong></em> </li>");
                         _e("<li><strong>origin</strong> - Set this to 1 to add the 'origin' parameter for extra JavaScript security. <em>Example: http://www.youtube.com/watch?v=quwebVjAEJA<strong>&origin=1</strong></em> </li>");
                         _e('</ul>');
@@ -4588,7 +4598,7 @@ class YouTubePrefs
                             Here is a short video explaining a few of the plugin's features:
                         </p>                        
                         <div class="epyt-fitvid">
-                            <iframe src="https://www.youtube.com/embed/QDdvXBqfrzM?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                            <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/QDdvXBqfrzM?rel=0" allowfullscreen="" frameborder="0"></iframe>
                         </div>
                         <p>
                             We've also found that a common support request has been from users that are pasting video links on single lines, as required, but are not seeing the video embed show up. One of these suggestions is usually the fix:                            
@@ -4958,6 +4968,7 @@ class YouTubePrefs
         $new_options[self::$opt_playsinline] = self::postchecked(self::$opt_playsinline) ? 1 : 0;
         $new_options[self::$opt_origin] = self::postchecked(self::$opt_origin) ? 1 : 0;
         $new_options[self::$opt_controls] = self::postchecked(self::$opt_controls) ? 1 : 0;
+        $new_options[self::$opt_disablekb] = self::postchecked(self::$opt_disablekb) ? 1 : 0;
         $new_options[self::$opt_color] = self::postchecked(self::$opt_color) ? 'red' : 'white';
         $new_options[self::$opt_nocookie] = self::postchecked(self::$opt_nocookie) ? 1 : 0;
         $new_options[self::$opt_gb_compat] = self::postchecked(self::$opt_gb_compat) ? 1 : 0;
@@ -5271,6 +5282,7 @@ class YouTubePrefs
             $input[self::$opt_responsive] = intval($input[self::$opt_responsive]);
             $input[self::$opt_responsive_all] = intval($input[self::$opt_responsive_all]);
             $input[self::$opt_defer_js] = intval($input[self::$opt_defer_js]);
+            $input[self::$opt_disablekb] = intval($input[self::$opt_disablekb]);
 
             $input[self::$opt_gallery_pagesize] = intval($input[self::$opt_gallery_pagesize]);
             $input[self::$opt_gallery_columns] = intval($input[self::$opt_gallery_columns]);
@@ -5306,6 +5318,7 @@ class YouTubePrefs
         $result = array();
         $default = array(
             self::$opt_rel => 1,
+            self::$opt_disablekb => 0,
             self::$opt_responsive => 0,
             self::$opt_responsive_all => 0,
             self::$opt_defer_js => 0,
@@ -5480,7 +5493,7 @@ class YouTubePrefs
                             Want a quick visual overview? Here's a preview of some of the free features of the plugin.
                         </p>
                         <div class="epyt-fitvid">
-                            <iframe src="https://www.youtube.com/embed/QDdvXBqfrzM?rel=0" allowfullscreen="" frameborder="0"></iframe>
+                            <iframe allow="fullscreen; accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" src="https://www.youtube.com/embed/QDdvXBqfrzM?rel=0" allowfullscreen="" frameborder="0"></iframe>
                         </div>
                         <p>
                         </p>

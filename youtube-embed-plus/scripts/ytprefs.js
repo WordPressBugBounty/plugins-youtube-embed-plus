@@ -352,34 +352,143 @@
                         {
                             $iframe.attr('data-facadesrc', window._EPADashboard_.cleanSrc(vidSrc));
                             $iframe.trigger('click');
+                            return;
                         }
-                        else
+
+                        var cleanSrcValue = window._EPADashboard_.cleanSrc(vidSrc);
+                        var parsed = window._EPADashboard_.parseYouTubeEmbedUrl(cleanSrcValue);
+
+                        var iframeId = $iframe.attr('id');
+                        var player = iframeId ? window._EPYT_.apiVideos[iframeId] : null;
+
+                        var ytReady = typeof window.YT !== 'undefined' && window.YT !== null && window.YT.loaded;
+
+                        if (!parsed.videoId || parsed.videoId === 'live_stream' || !ytReady || !player || typeof player.loadVideoById !== 'function')
                         {
-                            var cleanSrcValue = window._EPADashboard_.cleanSrc(vidSrc);
-                            if ($iframe.get(0).src && $iframe.get(0).contentWindow && $iframe.get(0).contentWindow.location)
+                            window._EPADashboard_.setVidSrcLegacy($iframe, cleanSrcValue);
+                            return;
+                        }
+
+                        var loadOptions = window._EPADashboard_.mapUrlParamsToLoadOptions(parsed.params, parsed.videoId);
+                        var shouldAutoplay = parsed.params.autoplay === '1';
+
+                        try
+                        {
+                            if (shouldAutoplay)
                             {
-                                try
-                                {
-                                    $iframe.get(0).contentWindow.location.replace(cleanSrcValue);
-                                }
-                                catch (err)
-                                {
-                                    $iframe.attr('src', cleanSrcValue);
-                                }
+                                player.loadVideoById(loadOptions);
                             }
                             else
                             {
-                                $iframe.attr('src', cleanSrcValue);
+                                player.cueVideoById(loadOptions);
                             }
-                            $iframe.get(0).epytsetupdone = false;
-                            window._EPADashboard_.setupevents($iframe.attr('id'));
+
+                            $iframe.data('ep-current-src', cleanSrcValue);
                         }
+                        catch (apiError)
+                        {
+                            window._EPADashboard_.setVidSrcLegacy($iframe, cleanSrcValue);
+                            return;
+                        }
+
                         $iframe.css('opacity', '1');
                     },
                     cleanSrc: function (srcInput)
                     {
                         var cleanedUrl = srcInput.replace('enablejsapi=1?enablejsapi=1', 'enablejsapi=1');
                         return cleanedUrl;
+                    },
+                    parseYouTubeEmbedUrl: function (embedUrl)
+                    {
+                        var result = {
+                            videoId: null,
+                            params: {}
+                        };
+
+                        if (!embedUrl || typeof embedUrl !== 'string')
+                        {
+                            return result;
+                        }
+
+                        var videoIdMatch = embedUrl.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
+                        if (videoIdMatch && videoIdMatch[1])
+                        {
+                            result.videoId = videoIdMatch[1];
+                        }
+                        else if (embedUrl.indexOf('/embed/live_stream') > -1)
+                        {
+                            result.videoId = 'live_stream';
+                        }
+
+                        var queryStart = embedUrl.indexOf('?');
+                        if (queryStart > -1)
+                        {
+                            var queryString = embedUrl.substring(queryStart + 1).split('#')[0];
+                            var pairs = queryString.split('&');
+                            for (var i = 0; i < pairs.length; i++)
+                            {
+                                var pair = pairs[i].split('=');
+                                if (pair.length === 2)
+                                {
+                                    result.params[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1]);
+                                }
+                            }
+                        }
+
+                        return result;
+                    },
+                    mapUrlParamsToLoadOptions: function (urlParams, videoId)
+                    {
+                        var options = {
+                            videoId: videoId
+                        };
+
+                        var startVal = urlParams.start || urlParams.t;
+                        if (startVal)
+                        {
+                            var startSeconds = parseInt(startVal, 10);
+                            if (!isNaN(startSeconds) && startSeconds > 0)
+                            {
+                                options.startSeconds = startSeconds;
+                            }
+                        }
+
+                        if (urlParams.end)
+                        {
+                            var endSeconds = parseInt(urlParams.end, 10);
+                            if (!isNaN(endSeconds) && endSeconds > 0)
+                            {
+                                options.endSeconds = endSeconds;
+                            }
+                        }
+
+                        return options;
+                    },
+                    setVidSrcLegacy: function ($iframe, cleanSrcValue)
+                    {
+                        if ($iframe.get(0).src && $iframe.get(0).contentWindow && $iframe.get(0).contentWindow.location)
+                        {
+                            try
+                            {
+                                $iframe.get(0).contentWindow.location.replace(cleanSrcValue);
+                            }
+                            catch (err)
+                            {
+                                $iframe.attr('src', cleanSrcValue);
+                            }
+                        }
+                        else
+                        {
+                            $iframe.attr('src', cleanSrcValue);
+                        }
+                        $iframe.get(0).epytsetupdone = false;
+                        // Ensure the iframe has an ID before calling setupevents
+                        if (!$iframe.attr('id'))
+                        {
+                            $iframe.attr('id', "_dytid_" + Math.round(Math.random() * 8999 + 1000));
+                        }
+                        window._EPADashboard_.setupevents($iframe.attr('id'));
+                        $iframe.css('opacity', '1');
                     },
                     loadYTAPI: function ()
                     {
@@ -740,7 +849,10 @@
                                 }
                             }
                             $(iframe).removeClass('epyt-facade');
-                            $(iframe).attr('allowfullscreen', '').attr('title', $facade.find('img').attr('alt')).attr('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
+                            $(iframe).attr('allowfullscreen', '')
+                            .attr('title', $facade.find('img').attr('alt'))
+                            .attr('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share')
+                            .attr('referrerpolicy', 'strict-origin-when-cross-origin');
 
                             window._EPADashboard_.loadYTAPI();
                             $facade.replaceWith(iframe);

@@ -3,8 +3,8 @@ Contributors: embedplus
 Plugin Name: Embed Plus for YouTube Gallery, Livestream and Lazy Loading with Facades
 Tags: youtube, youtube gallery, youtube live stream, lazy load, youtube channel
 Requires at least: 4.5
-Tested up to: 6.8
-Stable tag: 14.2.3
+Tested up to: 6.9
+Stable tag: 14.2.4
 License: GPLv3 or later
 
 A multi-featured plugin to embed YouTube in WordPress. Embed a video, YouTube channel gallery, playlist, or YouTube livestream. Defer JavaScript too!
@@ -54,7 +54,7 @@ The settings page has plenty of default options that you can automatically apply
 * Turn on/off closed captions by default
 * Make your video, gallery, or live stream responsive so that it dynamically fits in all screen sizes (smart phone, PC and tablet)
 
-Customizations can be also made to each YouTube embed by adding more to the link as shown below. Adding these will override the above global defaults that you set:
+Customizations can be also made to each YouTube embed by adding more to the link as shown below. Adding these will override the above global defaults that you set. Want a visual customizer wizard instead? [Go Pro here](https://www.embedplus.com/dashboard/pro-easy-video-analytics.aspx?ref=readme) (more info in the next section):
 
 * width - Sets the width of your player. If omitted, the default width will be the width of your theme's content. Example: `"https://www.youtube.com/watch?v=quwebVjAEJA&width=500&height=350"`
 * height - Sets the height of your player. If omitted, this will be calculated for you automatically. Example: `"https://www.youtube.com/watch?v=quwebVjAEJA&width=500&height=350"`
@@ -182,6 +182,15 @@ Assuming you already have the EmbedPlus plugin active, you can embed a YouTube s
 9. Embed Plus for YouTube Plugin Screenshot 9: Optional YouTube channel subscription button above gallery thumbnails
 
 == Changelog ==
+
+= Embed Plus for YouTube Plugin 14.2.4 =
+* This version fixes a lightbox gallery issue for pro users, and allows you to disable keyboard controls for both free and pro users.
+
+= Embed Plus for YouTube Plugin 14.2.3.3 =
+* This version fixes a referrer policy issue that occurs in galleries for some users.
+
+= Embed Plus for YouTube Plugin 14.2.3.2 =
+* This version fixes a referrer policy issue for some users in certain browsers.
 
 = Embed Plus for YouTube Plugin 14.2.3 =
 * This version removes the modest branding option which has been deprecated by Google. Also, pro users can experiment with the beta feature for filtering out YouTube Shorts from galleries.
